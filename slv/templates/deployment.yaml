@@ -3,14 +3,14 @@ kind: Deployment
 metadata:
   name: {{ include "slv.fullname" . }}
   labels:
-    {{- include "slv.labels" . | nindent 4 }}
+    app: slv
 spec:
 {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
 {{- end }}
   selector:
     matchLabels:
-      {{- include "slv.selectorLabels" . | nindent 6 }}
+      app: slv
   template:
     metadata:
     {{- with .Values.podAnnotations }}
@@ -18,7 +18,7 @@ spec:
         {{- toYaml . | nindent 8 }}
     {{- end }}
       labels:
-        {{- include "slv.selectorLabels" . | nindent 8 }}
+       app: slv
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
