@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ .Values.name }}
+  namespace: argocd
+spec:
+  destination:
+    namespace: {{ .Values.namespace }}
+    server: https://kubernetes.default.svc
+  source:
+    path: blue-green/
+    repoURL: 'https://github.com/slovink/argocd-bluegreen.git'
+    targetRevision: HEAD
+    helm:
+      valueFiles:
+        - values.yaml
+      parameters:
+        - name: image.tag
+          value: {{ .Values.image.tag }}		  
+  project: default
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: false
