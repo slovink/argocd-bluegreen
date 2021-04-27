@@ -25,7 +25,10 @@ spec:
   strategy:
     canary:
       steps:
-      # The initial step starts an experiment that runs a single pod ReplicaSet using the new pod spec
+      - setWeight: 10
+      - pause:
+          duration: 120s # 1 hour
+       # The initial step starts an experiment that runs a single pod ReplicaSet using the new pod spec
       # When the experiment is terminated, the rollout will progress through rest of the canary steps.
       - experiment:
           templates:
